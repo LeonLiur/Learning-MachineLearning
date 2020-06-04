@@ -28,3 +28,7 @@ def bench_k_means(estimator, name, dt):
 
 clf = KMeans(n_clusters=k, init='random', n_init=10, max_iter=300)
 bench_k_means(clf, "clf#1", data)
+
+prediction = clf.predict(digits, sample_weight=0.1)
+for x in range(len(prediction)):
+    print()
