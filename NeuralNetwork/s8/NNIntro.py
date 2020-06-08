@@ -1,3 +1,3 @@
 import tensorflow as tf
 
-print(tf.version.VERSION)
+print("version of tensorflow: " + tf.version.VERSION)
