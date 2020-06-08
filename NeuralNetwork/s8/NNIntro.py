@@ -22,6 +22,13 @@ model.compile(optimizer="adam", metrics=["accuracy"], loss="sparse_categorical_c
 
 model.fit(train_images, train_labels, epochs=5)
 
-test_loss, test_accuracy = model.evaluate(test_images, test_labels)
+print("\n--Model training process terminated--")
 
-print("Tested accuracy: " + str(test_accuracy))
+predictions = model.predict(test_images)
+
+for i in range(5):
+    plt.grid(False)
+    plt.imshow(test_images[100 + i], cmap = plt.cm.binary)
+    plt.xlabel("Actual: " + class_names[test_labels[100 + i]])
+    plt.title("Prediciton: " + class_names[np.argmax(predictions[100 + i])])
+    plt.show()
