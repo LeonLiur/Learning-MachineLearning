@@ -25,8 +25,6 @@ def decode_review(text):
     return " ".join([reverse_word_index.get(i, "?") for i in text])
 
 
-print(len(test_data[0]),len(test_data[1]))
-
 # Building the model
 
 model = keras.Sequential()
