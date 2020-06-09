@@ -38,13 +38,20 @@ model.summary()
 model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
 
 x_val = train_data[:10000]
-x_train = train_data[:10000]
+x_train = train_data[10000:]
 
 y_val = train_labels[:10000]
-y_train = train_labels[:10000]
+y_train = train_labels[10000:]
 
-fitModel = model.fit(x_train,y_train, epochs=40, batch_size=512, validation_data=(x_val, y_val))
+fitModel = model.fit(x_train,y_train, epochs=20, batch_size=512, validation_data=(x_val, y_val), verbose=1)
 
 result = model.evaluate(test_data, test_labels)
 
-print(result)
+for i in range(5):
+    test_review =test_data[i]
+    predict = model.predict([test_review])
+    print("Review: ")
+    print(decode_review(test_review))
+    print("Prediction: " + str(predict[i]))
+    print("Actual: " + str(test_labels[i]))
+
