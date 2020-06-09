@@ -37,3 +37,4 @@ model.add(keras.layers.Dense(1,activation="sigmoid"))
 
 model.summary()
 
+model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
