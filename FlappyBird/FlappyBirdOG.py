@@ -8,7 +8,7 @@ WIN_WIDTH = 500
 WIN_HEIGHT = 800
 
 BIRD_IMGS = [pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "bird1.png"))), pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "bird2.png"))), pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "bird3.png")))]
-PIPE_IMGS = pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "pipe.png")))
+PIPE_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "pipe.png")))
 BASE_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "base.png")))
 BG_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "bg.png")))
 
@@ -77,20 +77,12 @@ class Bird:
             self.img = self.IMGS[1]
             self.img_count = self.ANIMATION_TIME*2
 
-            # rotated_image = pygame.transform.rotate(self.img, self.tilt)
-            # new_rectangle = rotated_image.get_rect(center=self.img.get_rect(topleft=(self.x, self.y)).center)
-            # win.blit(rotated_image, new_rectangle.topleft)
-            blitRotateCenter(win, self.img, (self.x, self.y), self.tilt)
+            rotated_image = pygame.transform.rotate(self.img, self.tilt)
+            new_rectangle = rotated_image.get_rect(center=self.img.get_rect(topleft=(self.x, self.y)).center)
+            win.blit(rotated_image, new_rectangle)
 
     def get_mask(self):
         return pygame.mask.from_surface(self.img)
-
-
-def blitRotateCenter(surf, image, topleft, angle):
-    rotated_image = pygame.transform.rotate(image, angle)
-    new_rect = rotated_image.get_rect(center=image.get_rect(topleft=topleft).center)
-
-    surf.blit(rotated_image, new_rect.topleft)
 
 
 def draw_window(win, bird):
