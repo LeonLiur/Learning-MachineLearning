@@ -55,7 +55,7 @@ class Bird:
                     self.tilt -= self.ROT_VEL
 
     def draw(self, win):
-        self.img_count += 1
+        self.img_count = self.img_count + 1
 
         if self.img_count <= self.ANIMATION_TIME:
             self.img = self.IMGS[0]
