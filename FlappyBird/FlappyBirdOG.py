@@ -234,7 +234,6 @@ def main():
             add_pipe = False
 
             for pipe in pipes:
-                print(pipe.gap)
                 if pipe.collide(bird):
                     lost = True
 
