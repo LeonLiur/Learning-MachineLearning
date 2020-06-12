@@ -179,8 +179,11 @@ def draw_window(win, bird, pipes, base, score):
     pygame.display.update()
 
 
-def end_screen(win):
+def end_screen(win, score):
     win.blit(END_IMG, (0, 0))
+
+    score_label = STAT_FONT.render("Score: " + str(score), 1, (0, 0, 0))
+    win.blit(score_label, (round(WIN_WIDTH/2 - score_label.get_width()/2), 500))
     pygame.display.update()
 
 
@@ -198,7 +201,7 @@ def main():
     win = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
     run = True
     while run:
-        clock.tick(30)
+        clock.tick(25)
         counter += 1
         if counter >= 30:
             if spawn_distance > 510:
@@ -245,9 +248,12 @@ def main():
 
             base.move()
 
+        if bird.y + BIRD_IMGS[0].get_height() - 10 >= 730:
+            lost = True
+
         if lost:
             while True:
-                end_screen(win)
+                end_screen(win, score)
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         pygame.quit()
