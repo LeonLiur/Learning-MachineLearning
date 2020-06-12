@@ -6,7 +6,9 @@ pygame.font.init()
 WIN_WIDTH = 500
 WIN_HEIGHT = 800
 
-BIRD_IMGS = [pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "bird1.png"))), pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "bird2.png"))), pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "bird3.png")))]
+BIRD_IMGS = [pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "bird1.png"))),
+             pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "bird2.png"))),
+             pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "bird3.png")))]
 PIPE_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "pipe.png")))
 BASE_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "base.png")))
 BG_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "bg.png")))
@@ -16,7 +18,7 @@ STAT_FONT = pygame.font.SysFont("Comicsans", 50)
 
 class Bird:
     IMGS = BIRD_IMGS
-    MAX_ROTAITON = 25
+    MAX_ROTATION = 25
     ROT_VEL = 20
     ANIMATION_TIME = 5
 
@@ -49,8 +51,8 @@ class Bird:
         self.y = self.y + d
 
         if d < 0 or self.y < self.height + 50:
-            if self.tilt < self.MAX_ROTAITON:
-                self.tilt = self.MAX_ROTAITON
+            if self.tilt < self.MAX_ROTATION:
+                self.tilt = self.MAX_ROTATION
         else:
             if self.tilt > -90:
                 self.tilt -= self.ROT_VEL
