@@ -1,12 +1,15 @@
 import pygame
 import os
 import random
+import neat
 pygame.font.init()
 
 WIN_WIDTH = 500
 WIN_HEIGHT = 800
 
-BIRD_IMGS = [pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "bird1.png"))), pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "bird2.png"))), pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "bird3.png")))]
+BIRD_IMGS = [pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "bird1.png"))),
+             pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "bird2.png"))),
+             pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "bird3.png")))]
 PIPE_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "pipe.png")))
 BASE_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "base.png")))
 BG_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "bg.png")))
@@ -16,7 +19,7 @@ STAT_FONT = pygame.font.SysFont("Comicsans", 50)
 
 class Bird:
     IMGS = BIRD_IMGS
-    MAX_ROTAITON = 25
+    MAX_ROTATION = 25
     ROT_VEL = 20
     ANIMATION_TIME = 5
 
@@ -49,8 +52,8 @@ class Bird:
         self.y = self.y + d
 
         if d < 0 or self.y < self.height + 50:
-            if self.tilt < self.MAX_ROTAITON:
-                self.tilt = self.MAX_ROTAITON
+            if self.tilt < self.MAX_ROTATION:
+                self.tilt = self.MAX_ROTATION
         else:
             if self.tilt > -90:
                 self.tilt -= self.ROT_VEL
@@ -87,13 +90,12 @@ class Bird:
 class Pipe:
     WIN_HEIGHT = WIN_HEIGHT
     WIN_WIDTH = WIN_WIDTH
-    GAP = 200
     VEL = 5
 
-    def __init__(self, x):
+    def __init__(self, x, gap):
         self.x = x
         self.height = 0
-        self.gap = 120
+        self.gap = gap
 
         self.top = 0
         self.bottom = 0
@@ -108,7 +110,7 @@ class Pipe:
     def set_height(self):
         self.height = random.randrange(50, 450)
         self.top = self.height - self.PIPE_TOP.get_height()
-        self.bottom = self.height + self.GAP
+        self.bottom = self.height + self.gap
 
     def move(self):
         self.x -= self.VEL
@@ -164,7 +166,7 @@ def blitrotatecenter(surf, image, topleft, angle):
     surf.blit(rotated_image, new_rect.topleft)
 
 
-def draw_window(win, bird, pipes, base, score):
+def draw_window(win, bird, pipes, base, score, level):
     win.blit(BG_IMG, (0, 0))
 
     for pipe in pipes:
@@ -175,27 +177,32 @@ def draw_window(win, bird, pipes, base, score):
 
     score_label = STAT_FONT.render("Score: " + str(score), 1, (255, 255, 255))
     win.blit(score_label, (WIN_WIDTH - score_label.get_width() - 15, 10))
+    level_label = STAT_FONT.render("Difficulty: " + str(level), 1, (255, 255, 255))
+    win.blit(level_label, (WIN_WIDTH - level_label.get_width() - 15, 40))
 
     pygame.display.update()
 
 
-def end_screen(win, score):
+def end_screen(win, score, level):
     win.blit(END_IMG, (0, 0))
 
     score_label = STAT_FONT.render("Score: " + str(score), 1, (0, 0, 0))
     win.blit(score_label, (round(WIN_WIDTH/2 - score_label.get_width()/2), 500))
+    level_label = STAT_FONT.render("Difficulty: " + str(level), 1, (0, 0, 0))
+    win.blit(level_label, (round(WIN_WIDTH / 2 - score_label.get_width() / 2), 530))
     pygame.display.update()
 
 
 def main():
     bird = Bird(230, 350)
     base = Base(730)
-    pipes = [Pipe(700)]
+    pipes = [Pipe(700, random.randrange(200, 250))]
     score = 0
     spawn_distance = 700
     counter = 0
     started = False
     lost = False
+    level = 0
 
     clock = pygame.time.Clock()
     win = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
@@ -209,6 +216,7 @@ def main():
             else:
                 spawn_distance = 510
             counter = 0
+            level += 1
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -227,6 +235,7 @@ def main():
             add_pipe = False
 
             for pipe in pipes:
+                print(pipe.gap)
                 if pipe.collide(bird):
                     lost = True
 
@@ -241,25 +250,23 @@ def main():
 
             if add_pipe:
                 score += 1
-                pipes.append(Pipe(spawn_distance))
+                pipes.append(Pipe(spawn_distance, random.randrange(200, 250)))
 
             for r in rem:
                 pipes.remove(r)
-
-            base.move()
 
         if bird.y + BIRD_IMGS[0].get_height() - 10 >= 730:
             lost = True
 
         if lost:
             while True:
-                end_screen(win, score)
+                end_screen(win, score, level)
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         pygame.quit()
                         quit()
 
-        draw_window(win, bird, pipes, base, score)
+        draw_window(win, bird, pipes, base, score, level)
 
     pygame.quit()
     quit()
