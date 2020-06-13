@@ -208,15 +208,6 @@ def main():
     run = True
     while run:
         clock.tick(25)
-        counter += 1
-        if counter >= 30:
-            if spawn_distance > 510:
-                spawn_distance -= 1
-            else:
-                spawn_distance = 510
-            counter = 0
-            level += 1
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -228,6 +219,14 @@ def main():
                     bird.jump()
 
         if started and not lost:
+            counter += 1
+            if counter >= 30:
+                if spawn_distance > 510:
+                    spawn_distance -= 1
+                else:
+                    spawn_distance = 510
+                counter = 0
+                level += 1
             bird.move()
 
             rem = []
