@@ -7,6 +7,8 @@ pygame.font.init()
 WIN_WIDTH = 500
 WIN_HEIGHT = 800
 
+GEN = 0
+
 BIRD_IMGS = [pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "bird1.png"))),
              pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "bird2.png"))),
              pygame.transform.scale2x(pygame.image.load(os.path.join("imgs", "bird3.png")))]
@@ -166,7 +168,7 @@ def blitrotatecenter(surf, image, topleft, angle):
     surf.blit(rotated_image, new_rect.topleft)
 
 
-def draw_window(win, birds, pipes, base, score, level):
+def draw_window(win, birds, pipes, base, score, level, gen, live):
     win.blit(BG_IMG, (0, 0))
 
     for pipe in pipes:
@@ -180,6 +182,10 @@ def draw_window(win, birds, pipes, base, score, level):
     win.blit(score_label, (WIN_WIDTH - score_label.get_width() - 15, 10))
     level_label = STAT_FONT.render("Time: " + str(level) + "s", 1, (255, 255, 255))
     win.blit(level_label, (WIN_WIDTH - level_label.get_width() - 15, 40))
+    gen_label = STAT_FONT.render("Gen: " + str(gen), 1, (255, 255, 255))
+    win.blit(gen_label, (10, 10))
+    live_label = STAT_FONT.render("Alive: " + str(live), 1, (255, 255, 255))
+    win.blit(live_label, (10, 40))
 
     pygame.display.update()
 
@@ -195,6 +201,9 @@ def draw_window(win, birds, pipes, base, score, level):
 
 
 def eval_genomes(genomes, config):
+    global GEN
+    GEN += 1
+
     birds = []
     nets = []
     ge = []
@@ -289,7 +298,8 @@ def eval_genomes(genomes, config):
                 nets.pop(x)
                 ge.pop(x)
 
-        draw_window(win, birds, pipes, base, score, level)
+        live = len(birds)
+        draw_window(win, birds, pipes, base, score, level, GEN, live)
 
 
 def run(cpath):
@@ -304,7 +314,7 @@ def run(cpath):
     stats = neat.StatisticsReporter()
     p.add_reporter(stats)
 
-    winner = p.run(eval_genomes, 50)
+    p.run(eval_genomes, 50)
 
 
 if __name__ == "__main__":
