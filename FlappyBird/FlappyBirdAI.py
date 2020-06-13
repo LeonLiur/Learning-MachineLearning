@@ -240,11 +240,12 @@ def eval_genomes(genomes, config):
             if len(pipes) > 1 and birds[0].x > pipes[0].x + pipes[0].PIPE_TOP.get_width():
                 pipe_ind = 1
         else:
+            print("NO BIRDS ALIVE")
             break
 
         for x, bird in enumerate(birds):
-            bird.move()
             ge[x].fitness += 0.1
+            bird.move()
 
             output = nets[x].activate((bird.y,
                                        abs(bird.y - pipes[pipe_ind].height),
@@ -257,14 +258,14 @@ def eval_genomes(genomes, config):
         add_pipe = False
 
         for pipe in pipes:
+            pipe.move()
             for bird in birds:
                 if pipe.collide(bird):
-                    for x, xbird in enumerate(birds):
-                        ge[x].fitness -= 1
-                        birds.remove(xbird)
-                        birds.pop(x)
-                        nets.pop(x)
-                        ge.pop(x)
+                    ge[birds.index(bird)].fitness -= 1
+                    birds.remove(bird)
+                    birds.pop(birds.index(bird))
+                    nets.pop(birds.index(bird))
+                    ge.pop(birds.index(bird))
 
                 if not pipe.passed and pipe.x < bird.x:
                     pipe.passed = True
@@ -272,8 +273,6 @@ def eval_genomes(genomes, config):
 
             if pipe.x + pipe.PIPE_TOP.get_width() < 0:
                 rem.append(pipe)
-
-            pipe.move()
 
         if add_pipe:
             score += 1
@@ -285,13 +284,12 @@ def eval_genomes(genomes, config):
             pipes.remove(r)
 
         for x, xbird in enumerate(birds):
-            if xbird.y + BIRD_IMGS[0].get_height()  >= 730 or xbird.y < 0:
+            if xbird.y + BIRD_IMGS[0].get_height() - 10 >= 730 or xbird.y < 0:
                 birds.pop(x)
                 nets.pop(x)
                 ge.pop(x)
 
-    base.move()
-    draw_window(win, birds, pipes, base, score, level)
+        draw_window(win, birds, pipes, base, score, level)
 
 
 def run(cpath):
