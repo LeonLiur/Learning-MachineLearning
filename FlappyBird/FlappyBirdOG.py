@@ -176,7 +176,7 @@ def draw_window(win, bird, pipes, base, score, level):
 
     score_label = STAT_FONT.render("Score: " + str(score), 1, (255, 255, 255))
     win.blit(score_label, (WIN_WIDTH - score_label.get_width() - 15, 10))
-    level_label = STAT_FONT.render("Difficulty: " + str(level), 1, (255, 255, 255))
+    level_label = STAT_FONT.render("Time passed: " + str(level) + "s", 1, (255, 255, 255))
     win.blit(level_label, (WIN_WIDTH - level_label.get_width() - 15, 40))
 
     pygame.display.update()

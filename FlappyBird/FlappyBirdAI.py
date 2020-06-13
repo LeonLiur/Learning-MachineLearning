@@ -184,14 +184,14 @@ def draw_window(win, birds, pipes, base, score, level):
     pygame.display.update()
 
 
-def end_screen(win, score, level):
-    win.blit(END_IMG, (0, 0))
-
-    score_label = STAT_FONT.render("Score: " + str(score), 1, (0, 0, 0))
-    win.blit(score_label, (round(WIN_WIDTH/2 - score_label.get_width()/2), 500))
-    level_label = STAT_FONT.render("Difficulty: " + str(level), 1, (0, 0, 0))
-    win.blit(level_label, (round(WIN_WIDTH / 2 - score_label.get_width() / 2), 530))
-    pygame.display.update()
+# def end_screen(win, score, level):
+#     win.blit(END_IMG, (0, 0))
+#
+#     score_label = STAT_FONT.render("Score: " + str(score), 1, (0, 0, 0))
+#     win.blit(score_label, (round(WIN_WIDTH/2 - score_label.get_width()/2), 500))
+#     level_label = STAT_FONT.render("Difficulty: " + str(level), 1, (0, 0, 0))
+#     win.blit(level_label, (round(WIN_WIDTH / 2 - score_label.get_width() / 2), 530))
+#     pygame.display.update()
 
 
 def eval_genomes(genomes, config):
@@ -217,7 +217,7 @@ def eval_genomes(genomes, config):
     win = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
     running = True
     while running:
-        clock.tick(25)
+        clock.tick(30)
 
         # Increasing difficulty
         counter += 1
@@ -236,7 +236,7 @@ def eval_genomes(genomes, config):
                 quit()
 
         pipe_ind = 0
-        if len(birds) < 0:
+        if len(birds) > 0:
             if len(pipes) > 1 and birds[0].x > pipes[0].x + pipes[0].PIPE_TOP.get_width():
                 pipe_ind = 1
         else:
@@ -261,11 +261,11 @@ def eval_genomes(genomes, config):
             pipe.move()
             for bird in birds:
                 if pipe.collide(bird):
-                    ge[birds.index(bird)].fitness -= 1
-                    birds.remove(bird)
-                    birds.pop(birds.index(bird))
-                    nets.pop(birds.index(bird))
-                    ge.pop(birds.index(bird))
+                    for x, x_bird in enumerate(birds):
+                        ge[x].fitness -= 1
+                        birds.remove(x_bird)
+                        nets.pop(x)
+                        ge.pop(x)
 
                 if not pipe.passed and pipe.x < bird.x:
                     pipe.passed = True
