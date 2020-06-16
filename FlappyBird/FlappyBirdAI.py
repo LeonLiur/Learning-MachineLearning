@@ -255,7 +255,6 @@ def eval_genomes(genomes, config):
         for x, bird in enumerate(birds):
             ge[x].fitness += 0.1
             bird.move()
-
             output = nets[x].activate((bird.y,
                                        abs(bird.y - pipes[pipe_ind].height),
                                        abs(bird.y - pipes[pipe_ind].bottom)))
