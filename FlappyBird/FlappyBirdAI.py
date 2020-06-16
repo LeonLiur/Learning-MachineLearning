@@ -217,6 +217,7 @@ def eval_genomes(genomes, config):
 
     base = Base(730)
     pipes = [Pipe(700, random.randrange(200, 250))]
+
     score = 0
     spawn_distance = 700
     counter = 0
