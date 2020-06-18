@@ -292,6 +292,8 @@ def eval_genomes(genomes, config):
         for r in rem:
             pipes.remove(r)
 
+        base.move()
+
         for x, xbird in enumerate(birds):
             if xbird.y + BIRD_IMGS[0].get_height() - 10 >= 730 or xbird.y < 0:
                 birds.pop(x)

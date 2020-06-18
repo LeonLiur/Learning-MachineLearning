@@ -252,6 +252,8 @@ def main():
             for r in rem:
                 pipes.remove(r)
 
+            base.move()
+
         if bird.y + BIRD_IMGS[0].get_height() - 10 >= 730:
             lost = True
 
@@ -262,6 +264,9 @@ def main():
                     if event.type == pygame.QUIT:
                         pygame.quit()
                         quit()
+                    elif event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_SPACE:
+                            main()
 
         draw_window(win, bird, pipes, base, score, level)
 
