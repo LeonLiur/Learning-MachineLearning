@@ -190,7 +190,7 @@ def end_screen(win, score, level):
 
     score_label = STAT_FONT.render("Score: " + str(score), 1, (0, 0, 0))
     win.blit(score_label, (round(WIN_WIDTH/2 - score_label.get_width()/2), 500))
-    level_label = STAT_FONT.render("Difficulty: " + str(level), 1, (0, 0, 0))
+    level_label = STAT_FONT.render("Time: " + str(level), 1, (0, 0, 0))
     win.blit(level_label, (round(WIN_WIDTH / 2 - score_label.get_width() / 2), 530))
     pygame.display.update()
 
@@ -274,7 +274,8 @@ def main():
                         if j.get_button(1):
                             main()
                         elif j.get_button(2):
-                            run = False
+                            pygame.quit()
+                            quit()
 
         draw_window(win, bird, pipes, base, score, level)
 
