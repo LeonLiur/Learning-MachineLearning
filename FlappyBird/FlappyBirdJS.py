@@ -273,7 +273,7 @@ def main():
                     elif event.type == pygame.JOYBUTTONDOWN:
                         if j.get_button(1):
                             main()
-                        if j.get_button(2):
+                        elif j.get_button(2):
                             run = False
 
         draw_window(win, bird, pipes, base, score, level)
